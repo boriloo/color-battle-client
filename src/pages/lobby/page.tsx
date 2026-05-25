@@ -91,7 +91,7 @@ export default function LobbyPage() {
         return slots;
     };
 
-    const canStart = (pickerOrca && pickerSiri && helpersOrca && helpersSiri)
+    const canStart = true
 
     const startGame = () => {
         if (ownerRoom != currentRoom) return;
