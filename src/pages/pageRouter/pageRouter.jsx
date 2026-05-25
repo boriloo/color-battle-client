@@ -12,6 +12,11 @@ export default function PageRouter() {
             <Routes>
 
                 <Route
+                    path="/"
+                    element={<EnterPage />}
+                />
+
+                <Route
                     path="/enter"
                     element={<EnterPage />}
                 />

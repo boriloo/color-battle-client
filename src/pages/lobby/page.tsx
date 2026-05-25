@@ -3,6 +3,8 @@ import { Class, Player, Teams, usePlayerContext } from '../../context/playerCont
 import { socket } from '../../lib/socket';
 import { useNavigate } from 'react-router-dom';
 import { useGameContext } from '../../context/gameContext';
+import orcaImg from '../../assets/orca.png'
+import crabImg from '../../assets/crab.png'
 
 const MAX_HELPERS = 4;
 
@@ -106,7 +108,7 @@ export default function LobbyPage() {
                     {/* Time Orca */}
                     <div className='flex flex-col gap-3 items-start flex-1'>
                         <div className='bg-blue-800 rounded-full p-5 w-25 h-25 z-20 self-center'>
-                            <img src="src/assets/orca.png" alt="" />
+                            <img src={orcaImg} alt="" />
                         </div>
                         <p className='text-[45px] text-blue-400 self-center'>time orca</p>
 
@@ -123,7 +125,7 @@ export default function LobbyPage() {
                     {/* Time Siri */}
                     <div className='flex flex-col gap-3 items-end flex-1'>
                         <div className='bg-cyan-400 rounded-full p-5 w-25 h-25 z-20 self-center'>
-                            <img src="src/assets/crab.png" alt="" />
+                            <img src={crabImg} alt="" />
                         </div>
                         <p className='text-[45px] text-cyan-300 self-center'>time siri</p>
 
