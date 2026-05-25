@@ -120,11 +120,11 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
 
             }
 
-
         });
 
-        socket.on('mudar_player', (data: { player: Player }) => {
+        socket.on('mudar_player', (data: { player: Player, roomCode: string }) => {
             if (data && data.player) {
+                if (data.roomCode != currentRoom) return;
                 changePlayer(data.player);
             }
         });

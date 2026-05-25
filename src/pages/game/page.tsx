@@ -263,7 +263,11 @@ export default function GamePage() {
                 <div className='absolute slef-center blur-[100px] bg-amber-300 w-100 h-100 rounded-full mt-[-90px] z-20'></div>
                 <div className='w-full max-w-[700px] p-4 py-6 bg-zinc-800 rounded-xl flex flex-col gap-3 items-center z-40'>
                     <div className={`${whoWon() === 'Orca' ? 'bg-blue-600' : 'bg-cyan-400'}  p-5 mt-[-100px] w-40 h-40 rounded-full flex justify-center items-center`}>
-                        <img src={whoWon() === 'Orca' ? orcaImg : crabImg} />
+                        {whoWon() === 'Orca' ? (
+                            <img src={orcaImg} />
+                        ) : (
+                            <img src={crabImg} />
+                        )}
                     </div>
                     <p className='text-amber-300 text-[50px]'>VITÓRIA DO TIME {
                         whoWon()}</p>
