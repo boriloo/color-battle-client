@@ -69,11 +69,26 @@ interface GameContextType {
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
+const defaultGray = { h: 0, s: 0, v: 50 };
+
+const initialGameColors: GameColors = {
+    orcaColorOne: defaultGray,
+    orcaColorTwo: defaultGray,
+    orcaColorThree: defaultGray,
+    orcaColorFour: defaultGray,
+    orcaColorFive: defaultGray,
+    siriColorOne: defaultGray,
+    siriColorTwo: defaultGray,
+    siriColorThree: defaultGray,
+    siriColorFour: defaultGray,
+    siriColorFive: defaultGray,
+};
+
 export const GameProvider = ({ children }: { children: ReactNode }) => {
     const { ownerRoom, currentRoom } = usePlayerContext();
     const [inGame, setInGame] = useState<boolean>(false)
     const [colorSelected, setColorSelected] = useState<boolean>(false)
-    const [gameColors, setGameColors] = useState<GameColors>({});
+    const [gameColors, setGameColors] = useState<GameColors>(initialGameColors);
     const [currentStep, setCurrentStep] = useState<number>(1);
     const [mysteryColors, setMysteryColors] = useState<MysteryColors | null>(null);
     const [colorCompare, setColorCompare] = useState<ColorCompare>({});
@@ -242,9 +257,8 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
             if (!data?.roomCode) return;
 
             setInGame(true)
-
+            setGameColors(initialGameColors);
             setCurrentStep(1)
-            setGameColors({})
             setMysteryColors(null)
             setColorCompare({})
             setColorSelected(false)
