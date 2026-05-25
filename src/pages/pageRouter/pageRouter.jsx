@@ -32,10 +32,7 @@ export default function PageRouter() {
                 />
 
 
-                <Route
-                    path="/enteroom"
-                    element={<EnteroomPage />}
-                />
+                <Route path="/enteroom/:code?" element={<EnteroomPage />} />
 
             </Routes>
         </BrowserRouter>

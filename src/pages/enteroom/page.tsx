@@ -2,12 +2,16 @@ import { useEffect, useState } from 'react'
 import { socket } from '../../lib/socket';
 import { usePlayerContext } from '../../context/playerContext';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 export default function EnteroomPage() {
     const { changeMe, addNewPlayer, changeCurrentRoom, clearPlayers } = usePlayerContext()
     const navigate = useNavigate();
-    const [code, setCode] = useState<string>('');
+    const { code: codeParam } = useParams<{ code: string }>();
+    const [code, setCode] = useState<string>(codeParam ?? '');
     const [name, setName] = useState<string>('');
+
+
 
     useEffect(() => {
         clearPlayers()
@@ -35,7 +39,10 @@ export default function EnteroomPage() {
                     </div>
                     <div className='flex flex-col gap-2 w-full mt-5'>
                         <p className='text-[30px]'>Código da sala</p>
-                        <input onChange={(e) => { setCode(e.target.value) }} type="text" name="code" className='bg-white/10 hover:bg-white/15 transition-all 
+                        <input value={code}
+                            onChange={(e) => setCode(e.target.value)}
+                            type="text"
+                            name="code" className='bg-white/10 hover:bg-white/15 transition-all 
           cursor-pointer focus:cursor-text p-2 w-full outline-none rounded-md text-[25px]' />
                     </div>
                 </div>

@@ -1,10 +1,11 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Class, Player, Teams, usePlayerContext } from '../../context/playerContext'
 import { socket } from '../../lib/socket';
 import { useNavigate } from 'react-router-dom';
 import { useGameContext } from '../../context/gameContext';
 import orcaImg from '../../assets/orca.png'
 import crabImg from '../../assets/crab.png'
+import { Check, Copy } from 'lucide-react';
 
 const MAX_HELPERS = 4;
 
@@ -12,6 +13,14 @@ export default function LobbyPage() {
     const { inGame } = useGameContext();
     const { currentPlayers, currentRoom, me, changePlayer, ownerRoom, changeMe } = usePlayerContext();
     const navigate = useNavigate()
+    const [copied, setCopied] = useState(false)
+
+    const copyInviteLink = () => {
+        navigator.clipboard.writeText(`https://color-battle-client.vercel.app/enteroom/${currentRoom}`)
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+    }
+
 
     useEffect(() => {
         if (inGame) navigate('/game')
@@ -82,7 +91,7 @@ export default function LobbyPage() {
         return slots;
     };
 
-    const canStart = true
+    const canStart = (pickerOrca && pickerSiri && helpersOrca && helpersSiri)
 
     const startGame = () => {
         if (ownerRoom != currentRoom) return;
@@ -93,8 +102,18 @@ export default function LobbyPage() {
     return (
         <div className='flex w-full h-screen justify-center items-center text-white'>
 
-            <h1 className='text-2xl absolute self-center top-5 text-white z-10'>Código da sala: {currentRoom}</h1>
+            <h1 className='text-4xl absolute self-center top-5 text-white z-10 flex flex-row gap-2 items-center'>
+                Código da sala:
+                <p onClick={copyInviteLink} className='p-2 bg-white/20 flex flex-row gap-3 items-center rounded-md hover:bg-white/30 transition-all cursor-pointer'>
+                    {currentRoom}
+                    {copied ? <Check size={30} className='text-green-400' /> : <Copy size={30} />}
+                </p>
+            </h1>
 
+            {/* pop-up */}
+            <div className={`${copied ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'} fixed bottom-6 left-1/2 -translate-x-1/2 bg-white/20 backdrop-blur-md text-white px-5 py-3 rounded-full text-[20px] transition-all duration-300`}>
+                Link copiado!
+            </div>
             <div className='absolute left-0 top-40 w-full max-w-60 bg-white/15 backdrop-blur-md flex text-[25px] flex-col p-4 rounded-r-2xl overflow-hidden'>
                 <p>Em espera:</p>
                 {awayPlayers.map((player) => (
