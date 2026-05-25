@@ -356,7 +356,7 @@ export default function GamePage() {
                             style={{ backgroundColor: hsvToRgbString(getColor("orca")?.h, getColor("orca")?.s, getColor("orca")?.v) }}
                         >
                             <div className='absolute top-[-25px] left-[-25px] bg-blue-800 rounded-full p-3 w-15 h-15 z-20'>
-                                <img src="src/assets/orca.png" alt="" />
+                                <img src={orcaImg} alt="" />
                             </div>
                         </div>
                         <div
@@ -364,7 +364,7 @@ export default function GamePage() {
                             style={{ backgroundColor: hsvToRgbString(getColor("siri")?.h, getColor("siri")?.s, getColor("siri")?.v) }}
                         >
                             <div className='absolute top-[-25px] right-[-25px] bg-cyan-400 rounded-full p-3 w-15 h-15 z-20'>
-                                <img src="src/assets/crab.png" alt="" />
+                                <img src={crabImg} alt="" />
                             </div>
                         </div>
                     </div>
