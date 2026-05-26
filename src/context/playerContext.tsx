@@ -94,7 +94,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         socket.on('novo_player', (data: { name: string, roomCode: string }) => {
             if (data && data.name) {
-                if (data.roomCode != currentRoomRef.current) return; // <-- ref
+               
                 addNewPlayer(data.name);
             }
         });
@@ -111,17 +111,17 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
             if (ownerRoomRef.current === data.roomCode) return;
 
             if (ownerRoomRef.current === 'null') {
-                if (data.roomCode != currentRoomRef.current) { // <-- ref
-                    setCurrentPlayers(data.players);
-                    setCurrentRoom(data.roomCode);
-                    socket.emit('novo_player', { name: me?.name, roomCode: data.roomCode });
-                }
+
+                setCurrentPlayers(data.players);
+                setCurrentRoom(data.roomCode);
+                socket.emit('novo_player', { name: me?.name, roomCode: data.roomCode });
+
             }
         });
 
         socket.on('mudar_player', (data: { player: Player, roomCode: string }) => {
             if (data && data.player) {
-                if (data.roomCode != currentRoomRef.current) return; // <-- ref
+
                 changePlayer(data.player);
             }
         });
