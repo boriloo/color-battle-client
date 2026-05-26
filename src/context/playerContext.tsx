@@ -117,9 +117,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
                     setCurrentRoom(data.roomCode);
                     socket.emit('novo_player', { name: me?.name, roomCode: data.roomCode });
                 }
-
             }
-
 
         });
 

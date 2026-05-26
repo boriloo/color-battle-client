@@ -115,71 +115,107 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         b: { h: number; s: number; v: number }
     ): number {
 
+        // Atalho: cores idênticas = 100% garantido
+        if (a.h === b.h && a.s === b.s && a.v === b.v) return 100;
+
         const hsvToRgb = (h: number, s: number, v: number) => {
             s /= 100; v /= 100;
             const k = (n: number) => (n + h / 60) % 6;
             const f = (n: number) => v * (1 - s * Math.max(0, Math.min(k(n), 4 - k(n), 1)));
-            return { r: f(5), g: f(3), b: f(1) };
+            return [f(5), f(3), f(1)] as [number, number, number];
         };
 
         const rgbToXyz = (r: number, g: number, b: number) => {
             const lin = (c: number) => c > 0.04045 ? Math.pow((c + 0.055) / 1.055, 2.4) : c / 12.92;
             const [rl, gl, bl] = [lin(r), lin(g), lin(b)];
-            return {
-                x: rl * 0.4124564 + gl * 0.3575761 + bl * 0.1804375,
-                y: rl * 0.2126729 + gl * 0.7151522 + bl * 0.0721750,
-                z: rl * 0.0193339 + gl * 0.1191920 + bl * 0.9503041,
-            };
+            return [
+                rl * 0.4124564 + gl * 0.3575761 + bl * 0.1804375,
+                rl * 0.2126729 + gl * 0.7151522 + bl * 0.0721750,
+                rl * 0.0193339 + gl * 0.1191920 + bl * 0.9503041,
+            ] as [number, number, number];
         };
 
         const xyzToLab = (x: number, y: number, z: number) => {
-            const f = (t: number) => t > 0.008856 ? Math.cbrt(t) : (7.787 * t) + (16 / 116);
-            const [fx, fy, fz] = [f(x / 0.95047), f(y / 1.00000), f(z / 1.08883)];
-            return {
-                L: (116 * fy) - 16,
-                a: 500 * (fx - fy),
-                b: 200 * (fy - fz),
-            };
+            const f = (t: number) => t > 0.008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116;
+            const fy = f(y / 1.0);
+            return [116 * fy - 16, 500 * (f(x / 0.95047) - fy), 200 * (fy - f(z / 1.08883))] as [number, number, number];
         };
 
-        const toLab = (hsv: { h: number; s: number; v: number }) => {
-            const { r, g, b } = hsvToRgb(hsv.h, hsv.s, hsv.v);
-            const { x, y, z } = rgbToXyz(r, g, b);
-            return xyzToLab(x, y, z);
+        const hsvToLab = (hsv: { h: number; s: number; v: number }) => {
+            return xyzToLab(...rgbToXyz(...hsvToRgb(hsv.h, hsv.s, hsv.v)));
         };
 
-        const A = toLab(a);
-        const B = toLab(b);
+        const ciede2000 = (L1: number, a1: number, b1: number, L2: number, a2: number, b2: number): number => {
+            const rad = (d: number) => d * Math.PI / 180;
+            const deg = (r: number) => r * 180 / Math.PI;
 
-        const dL = A.L - B.L;
-        const C1 = Math.sqrt(A.a ** 2 + A.b ** 2);
-        const C2 = Math.sqrt(B.a ** 2 + B.b ** 2);
-        const dC = C1 - C2;
-        const dA = A.a - B.a;
-        const dB = A.b - B.b;
-        const dH = Math.sqrt(Math.max(0, dA ** 2 + dB ** 2 - dC ** 2));
+            const C1 = Math.sqrt(a1 ** 2 + b1 ** 2);
+            const C2 = Math.sqrt(a2 ** 2 + b2 ** 2);
+            const Cb = (C1 + C2) / 2;
+            const Cb7 = Cb ** 7;
+            const G = 0.5 * (1 - Math.sqrt(Cb7 / (Cb7 + 25 ** 7)));
+            const a1p = a1 * (1 + G), a2p = a2 * (1 + G);
+            const C1p = Math.sqrt(a1p ** 2 + b1 ** 2);
+            const C2p = Math.sqrt(a2p ** 2 + b2 ** 2);
 
-        // kL=3: luminosidade pesa menos, matiz/croma penalizam mais
-        const kL = 3, kC = 1, kH = 1;
-        const sL = 1, sC = 1 + 0.045 * C1, sH = 1 + 0.015 * C1;
+            const h1p = C1p === 0 ? 0 : (deg(Math.atan2(b1, a1p)) + 360) % 360;
+            const h2p = C2p === 0 ? 0 : (deg(Math.atan2(b2, a2p)) + 360) % 360;
 
-        const deltaE = Math.sqrt(
-            (dL / (kL * sL)) ** 2 +
-            (dC / (kC * sC)) ** 2 +
-            (dH / (kH * sH)) ** 2
-        );
+            const dLp = L2 - L1;
+            const dCp = C2p - C1p;
 
-        // Calibrado nos seus exemplos:
-        // verde vs roxo (4.75) → deltaE ~38 → 47%
-        // laranja vs laranja saturado (6.26) → deltaE ~28 → 62%  
-        // verde vs verde (6.49) → deltaE ~25 → 64%
-        const maxDelta = 65;
-        const raw = Math.max(0, 1 - (deltaE / maxDelta));
+            let dhp = 0;
+            if (C1p * C2p !== 0) {
+                const diff = h2p - h1p;
+                dhp = Math.abs(diff) <= 180 ? diff : diff > 180 ? diff - 360 : diff + 360;
+            }
+            const dHp = 2 * Math.sqrt(C1p * C2p) * Math.sin(rad(dhp / 2));
 
-        // Curva leve para espalhar melhor os scores no meio
-        const curved = Math.pow(raw, 0.85);
+            const Lbp = (L1 + L2) / 2;
+            const Cbp = (C1p + C2p) / 2;
 
-        return Math.round(curved * 100);
+            let hbp = h1p + h2p;
+            if (C1p * C2p !== 0) {
+                hbp = Math.abs(h1p - h2p) <= 180
+                    ? (h1p + h2p) / 2
+                    : h1p + h2p < 360
+                        ? (h1p + h2p + 360) / 2
+                        : (h1p + h2p - 360) / 2;
+            }
+
+            const T = 1
+                - 0.17 * Math.cos(rad(hbp - 30))
+                + 0.24 * Math.cos(rad(2 * hbp))
+                + 0.32 * Math.cos(rad(3 * hbp + 6))
+                - 0.20 * Math.cos(rad(4 * hbp - 63));
+
+            const SL = 1 + 0.015 * (Lbp - 50) ** 2 / Math.sqrt(20 + (Lbp - 50) ** 2);
+            const SC = 1 + 0.045 * Cbp;
+            const SH = 1 + 0.015 * Cbp * T;
+
+            const Cbp7 = Cbp ** 7;
+            const RC = 2 * Math.sqrt(Cbp7 / (Cbp7 + 25 ** 7));
+            const dt = 30 * Math.exp(-((hbp - 275) / 25) ** 2);
+            const RT = -RC * Math.sin(rad(2 * dt));
+
+            return Math.sqrt(
+                (dLp / SL) ** 2 +
+                (dCp / SC) ** 2 +
+                (dHp / SH) ** 2 +
+                RT * (dCp / SC) * (dHp / SH)
+            );
+        };
+
+        const [L1, a1, b1] = hsvToLab(a);
+        const [L2, a2, b2] = hsvToLab(b);
+        const de = ciede2000(L1, a1, b1, L2, a2, b2);
+
+        // ΔE₀₀ reference: ~1 = limiar perceptível, ~10 = similar, ~30 = diferente, ~60 = extremo
+        const maxDelta = 60;
+        const raw = Math.max(0, 1 - de / maxDelta);
+
+        // Expoente 1.6: estica a escala p/ baixo no meio, sem falsificar os extremos
+        return Math.round(Math.pow(raw, 1.6) * 100);
     }
 
 
