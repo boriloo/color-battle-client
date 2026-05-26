@@ -25,7 +25,7 @@ interface ColorCompare {
     siriColorFive?: number;
 }
 
-interface GameColors {
+export interface GameColors {
     orcaColorOne?: { h: number; s: number; v: number };
     orcaColorTwo?: { h: number; s: number; v: number };
     orcaColorThree?: { h: number; s: number; v: number };

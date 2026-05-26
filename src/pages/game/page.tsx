@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import ColorPicker from '../../components/colorPicker'
 import { usePlayerContext } from '../../context/playerContext'
-import { useGameContext } from '../../context/gameContext'
+import { GameColors, useGameContext } from '../../context/gameContext'
 import { socket } from '../../lib/socket'
 import { useNavigate } from 'react-router-dom'
 import orcaImg from '../../assets/orca.png'
@@ -32,6 +32,12 @@ export default function GamePage() {
 
 
     const currentPickerColor = useRef<{ h: number; s: number; v: number }>({ h: 150, s: 100, v: 100 })
+
+    const gameColorsRef = useRef<GameColors>({})
+
+    useEffect(() => {
+        gameColorsRef.current = gameColors
+    }, [gameColors])
 
     const localSelectedColorRef = useRef(false)
     const colorSelectedRef = useRef(colorSelected)
@@ -191,10 +197,10 @@ export default function GamePage() {
     const getColor = useCallback((team: 'orca' | 'siri') => {
         const stepToRead = currentStep
         const colors = team === 'orca'
-            ? [gameColors.orcaColorOne, gameColors.orcaColorTwo, gameColors.orcaColorThree, gameColors.orcaColorFour, gameColors.orcaColorFive]
-            : [gameColors.siriColorOne, gameColors.siriColorTwo, gameColors.siriColorThree, gameColors.siriColorFour, gameColors.siriColorFive]
+            ? [gameColorsRef.current.orcaColorOne, gameColorsRef.current.orcaColorTwo, gameColorsRef.current.orcaColorThree, gameColorsRef.current.orcaColorFour, gameColorsRef.current.orcaColorFive]
+            : [gameColorsRef.current.siriColorOne, gameColorsRef.current.siriColorTwo, gameColorsRef.current.siriColorThree, gameColorsRef.current.siriColorFour, gameColorsRef.current.siriColorFive]
         return colors[stepToRead - 1] ?? null
-    }, [gameColors, currentStep])
+    }, [currentStep])
 
     const getMysteryColor = useCallback((team: 'orca' | 'siri') => {
         const stepToRead = currentStep
