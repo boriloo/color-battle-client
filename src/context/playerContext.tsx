@@ -112,17 +112,20 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
             if (ownerRoomRef.current === data.roomCode) return;
 
             if (ownerRoomRef.current === 'null') {
-                if (data.roomCode != currentRoom) {
-                    setCurrentPlayers(data.players);
-                    setCurrentRoom(data.roomCode);
-                    socket.emit('novo_player', { name: me?.name, roomCode: data.roomCode });
-                }
+                if (data.roomCode != currentRoom) return
+                setCurrentPlayers(data.players);
+                setCurrentRoom(data.roomCode);
+                socket.emit('novo_player', { name: me?.name, roomCode: data.roomCode });
             }
 
         });
 
-        socket.on('mudar_player', (data: { player: Player }) => {
+        socket.on('mudar_player', (data: { player: Player, roomCode: string }) => {
             if (data && data.player) {
+                if (data.roomCode != currentRoom) {
+                    alert('player de outra sala')
+                    return
+                }
                 changePlayer(data.player);
             }
         });

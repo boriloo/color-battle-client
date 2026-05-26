@@ -56,7 +56,7 @@ export default function LobbyPage() {
             changeMe(player)
         }
         changePlayer(player);
-        socket.emit('mudar_player', { player });
+        socket.emit('mudar_player', { player, currentRoom });
     };
 
     const handleEnterSlot = (team: Teams, cls: Class) => {
