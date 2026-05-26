@@ -96,3 +96,13 @@ body {
 .slot-enter {
   animation: slot-enter 0.5s ease-out forwards;
 }
+
+@keyframes gradient-x {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 200% 50%;
+  }
+}
