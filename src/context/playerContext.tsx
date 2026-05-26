@@ -36,11 +36,9 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
 
     const currentPlayersRef = useRef(currentPlayers);
     const ownerRoomRef = useRef(ownerRoom);
-    const currentRoomRef = useRef(currentRoom); // <-- adicionado
 
     useEffect(() => { currentPlayersRef.current = currentPlayers; }, [currentPlayers]);
     useEffect(() => { ownerRoomRef.current = ownerRoom; }, [ownerRoom]);
-    useEffect(() => { currentRoomRef.current = currentRoom; }, [currentRoom]); // <-- adicionado
 
     const changePlayers = useCallback((players: Player[]) => {
         setCurrentPlayers(players);
@@ -61,6 +59,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
         });
     }, []);
 
+
     const addNewPlayer = useCallback((playerName: string) => {
         setCurrentPlayers(prev => {
             const jaExiste = prev.some(player => player.name === playerName);
@@ -75,6 +74,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
         });
     }, []);
 
+    // Ajustado: Filtra comparando com a propriedade .name do objeto
     const removePlayer = useCallback((playerName: string) => {
         setCurrentPlayers(prev => prev.filter(player => player.name !== playerName));
     }, []);
@@ -91,10 +91,11 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
         setOwnerRoom(roomCode);
     }, [ownerRoom]);
 
+
     useEffect(() => {
         socket.on('novo_player', (data: { name: string, roomCode: string }) => {
             if (data && data.name) {
-               
+                if (data.roomCode != currentRoom) return;
                 addNewPlayer(data.name);
             }
         });
@@ -111,17 +112,19 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
             if (ownerRoomRef.current === data.roomCode) return;
 
             if (ownerRoomRef.current === 'null') {
-
-                setCurrentPlayers(data.players);
-                setCurrentRoom(data.roomCode);
-                socket.emit('novo_player', { name: me?.name, roomCode: data.roomCode });
+                if (data.roomCode != currentRoom) {
+                    setCurrentPlayers(data.players);
+                    setCurrentRoom(data.roomCode);
+                    socket.emit('novo_player', { name: me?.name, roomCode: data.roomCode });
+                }
 
             }
+
+
         });
 
-        socket.on('mudar_player', (data: { player: Player, roomCode: string }) => {
+        socket.on('mudar_player', (data: { player: Player }) => {
             if (data && data.player) {
-
                 changePlayer(data.player);
             }
         });
