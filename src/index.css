@@ -106,3 +106,107 @@ body {
     background-position: 200% 50%;
   }
 }
+
+.aurora-container {
+  position: relative;
+  width: 100vw;
+  /* Força a largura da tela */
+  height: 100vh;
+  /* Força a altura da tela */
+  overflow: hidden;
+  opacity: 0.8;
+  z-index: -1;
+  /* Garante que fique atrás de tudo dentro do pai */
+}
+
+/* Base das esferas de cor */
+.aurora-sphere {
+  position: absolute;
+  filter: blur(7vi);
+  /* Aumentei o blur para um efeito mais suave */
+  -webkit-filter: blur(7vi);
+  mix-blend-mode: screen;
+  /* Faz as cores se somarem de forma suave */
+  opacity: 0.5;
+  border-radius: 100%;
+}
+
+.aurora-1 {
+  width: 80vw;
+  height: 80vw;
+  background-color: #3a57ff;
+  left: -10%;
+  top: -20%;
+  animation: aurora-fly 20s linear infinite;
+}
+
+.aurora-2 {
+  width: 70vw;
+  height: 90vh;
+  background-color: #33daff;
+  bottom: -10%;
+  left: -5%;
+  animation: aurora-fly-plus 25s linear infinite;
+}
+
+.aurora-3 {
+  width: 60vw;
+  height: 60vw;
+  bottom: -15%;
+  right: -10%;
+  background-color: #1f2dca;
+  animation: aurora-fly 18s linear infinite;
+}
+
+.aurora-4 {
+  width: 50vw;
+  height: 50vw;
+  top: 10%;
+  right: 10%;
+  background-color: #51a8ff;
+  animation: aurora-fly-plus 15s linear infinite;
+}
+
+.aurora-1 {
+  background-color: #172213;
+}
+
+/* Grafite */
+.aurora-2 {
+  background-color: #0c1224;
+}
+
+/* Neutral 900 */
+.aurora-3 {
+  background-color: #2b0178;
+}
+
+/* Roxo Ultra Dark */
+.aurora-4 {
+  background-color: #5b2932;
+}
+
+/* Neutral 700 */
+
+/* Azul Royal */
+
+/* Animações de órbita */
+@keyframes aurora-fly {
+  from {
+    transform: rotate(0deg) translate(100px) rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg) translate(100px) rotate(-360deg);
+  }
+}
+
+@keyframes aurora-fly-plus {
+  from {
+    transform: rotate(360deg) translate(150px) rotate(-360deg);
+  }
+
+  to {
+    transform: rotate(0deg) translate(150px) rotate(0deg);
+  }
+}

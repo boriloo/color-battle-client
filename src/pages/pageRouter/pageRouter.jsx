@@ -3,6 +3,7 @@ import EnterPage from "../enter/page";
 import GamePage from "../game/page";
 import LobbyPage from "../lobby/page";
 import EnteroomPage from "../enteroom/page";
+import CreatePage from "../create/page";
 
 
 export default function PageRouter() {
@@ -29,6 +30,11 @@ export default function PageRouter() {
                 <Route
                     path="/game"
                     element={<GamePage />}
+                />
+
+                <Route
+                    path="/create"
+                    element={<CreatePage />}
                 />
 
 

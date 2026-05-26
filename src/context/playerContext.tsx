@@ -12,6 +12,8 @@ export type Player = {
 };
 
 interface PlayerContextType {
+    typaGame: '1v1' | 'normal';
+    changeTypaGame: (typaGame: '1v1' | 'normal') => void,
     currentRoom: string,
     changeCurrentRoom: (roomCode: string) => void,
     changePlayer: (player: Player) => void,
@@ -32,6 +34,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
     const [ownerRoom, setOwnerRoom] = useState<string>('null');
     const [currentRoom, setCurrentRoom] = useState<string>('');
     const [currentPlayers, setCurrentPlayers] = useState<Player[]>([]);
+    const [typaGame, setTypaGame] = useState<'1v1' | 'normal'>('normal')
     const [me, setMe] = useState<Player | null>(null);
 
     const currentPlayersRef = useRef(currentPlayers);
@@ -44,6 +47,11 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
     const changePlayers = useCallback((players: Player[]) => {
         setCurrentPlayers(players);
     }, []);
+
+    const changeTypaGame = useCallback((typaGame: '1v1' | 'normal') => {
+        setTypaGame(typaGame);
+    }, []);
+
 
     const changeMe = useCallback((data: Player) => {
         setMe({
@@ -97,7 +105,6 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
         socket.on('novo_player', (data: { name: string, roomCode: string }) => {
             if (data && data.name) {
                 if (data.roomCode != currentRoomRef.current) {
-                    alert('player de outra sala 1')
                     return
                 }
 
@@ -107,14 +114,14 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
 
         socket.on('entrar_sala', (data) => {
             if (ownerRoomRef.current === data.roomCode) {
-                socket.emit('info', { players: currentPlayersRef.current, roomCode: data.roomCode });
+                socket.emit('info', { players: currentPlayersRef.current, roomCode: data.roomCode, typaGame: typaGame });
             } else {
                 changeCurrentRoom(data.roomCode)
                 changeOwnerRoom('null')
             }
         });
 
-        socket.on('info', (data: { players: Player[], roomCode: string }) => {
+        socket.on('info', (data: { players: Player[], roomCode: string, typaGame: '1v1' | 'normal' }) => {
             if (!data?.players || !data?.roomCode) return;
 
             if (ownerRoomRef.current === data.roomCode) {
@@ -123,9 +130,9 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
 
             if (ownerRoomRef.current === 'null') {
                 if (data.roomCode != currentRoomRef.current) {
-                    alert('player de outra sala 2')
                     return
                 }
+                setTypaGame(data.typaGame);
                 setCurrentPlayers(data.players);
                 setCurrentRoom(data.roomCode);
                 socket.emit('novo_player', { name: me?.name, roomCode: data.roomCode });
@@ -137,7 +144,6 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
 
             if (data && data.player) {
                 if (data.roomCode != currentRoomRef.current) {
-                    console.log('sala recebida: ', data.player)
                     return
                 }
                 changePlayer(data.player);
@@ -153,7 +159,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
     }, [addNewPlayer, me]);
 
     return (
-        <PlayerContext.Provider value={{ currentRoom, changeCurrentRoom, changePlayer, changeMe, me, ownerRoom, changeOwnerRoom, changePlayers, currentPlayers, addNewPlayer, removePlayer, clearPlayers }}>
+        <PlayerContext.Provider value={{ typaGame, changeTypaGame, currentRoom, changeCurrentRoom, changePlayer, changeMe, me, ownerRoom, changeOwnerRoom, changePlayers, currentPlayers, addNewPlayer, removePlayer, clearPlayers }}>
             {children}
         </PlayerContext.Provider>
     );

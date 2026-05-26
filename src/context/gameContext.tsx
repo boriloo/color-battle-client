@@ -52,6 +52,7 @@ interface MysteryColors {
 }
 
 interface GameContextType {
+
     inGame: boolean
     currentStep: number
     colorSelected: boolean
@@ -281,7 +282,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
             1: 'One', 2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five'
         };
         const key = `${team}Color${numberWords[index]}` as keyof ColorCompare;
-        setColorCompare((prev) => ({ ...prev, [key]: value }));  // ← setColorCompare, não setGameColors
+        setColorCompare((prev) => ({ ...prev, [key]: value }));
     }, []);
 
 

@@ -2,27 +2,18 @@ import { use, useEffect, useState } from 'react'
 import { socket } from '../../lib/socket';
 import { usePlayerContext } from '../../context/playerContext';
 import { useNavigate } from 'react-router-dom';
+import { LogIn, SquarePlus } from 'lucide-react';
 
 export default function EnterPage() {
-    const { addNewPlayer, changeCurrentRoom, changeOwnerRoom, changeMe, clearPlayers } = usePlayerContext()
+    const { changeOwnerRoom, clearPlayers } = usePlayerContext()
     const navigate = useNavigate();
-    const [name, setName] = useState<string>('');
 
     useEffect(() => {
         clearPlayers()
     }, [])
 
     const criarSala = () => {
-        if (!name.trim()) return;
-
-        addNewPlayer(name);
-        changeMe({ name: name, class: 'away', team: 'none' })
-        const codigoSala = Math.floor(1000 + Math.random() * 9000).toString();
-        changeCurrentRoom(codigoSala)
-        changeOwnerRoom(codigoSala)
-
-        navigate('/lobby')
-
+        navigate('/create')
     };
 
     const entrarSala = () => {
@@ -33,39 +24,55 @@ export default function EnterPage() {
 
 
     return (
-        <div className='flex w-full h-screen justify-center items-center text-white'>
+        <div className='flex w-full min-h-screen justify-center items-center text-white p-5'>
+            <div className={`
+             min-h-screen w-full fixed bg-cover bg-center z-[-1] overflow-hidden scale-101 opacity-80 brightness-75 rotate-180`}>
 
-            <div className='flex flex-col gap-4 w-full max-w-[700px] items-center justify-center select-none'>
-                <h1 className='text-[150px] font-medium z-20 text-center'
-                    style={{
-                        color: 'transparent',
-                        backgroundClip: 'text',
-                        WebkitBackgroundClip: 'text',
-                        backgroundImage: 'linear-gradient(to right, #ff6666, #ff66ff, #6666ff, #66ffff, #66ff66, #ffff66, #ff6666)',
-
-                        backgroundSize: '200% auto',
-
-                        animation: 'gradient-x 4s linear infinite'
-                    }}>Color Battle</h1>
-                <h1 className='text-[150px] font-medium z-10 mt-[-240px] blur-2xl  text-center opacity-75'
-                    style={{
-                        color: 'transparent',
-                        backgroundClip: 'text',
-                        WebkitBackgroundClip: 'text',
-                        backgroundImage: 'linear-gradient(to right, #ff0000, #ff00ff, #0000ff, #00ffff, #00ff00, #ffff00, #ff0000)',
-
-                        backgroundSize: '200% auto',
-
-                        animation: 'gradient-x 4s linear infinite'
-                    }}>Color Battle</h1>
-                <div className='flex flex-col gap-2 w-full'>
-                    <p className='text-[30px]'>seu Nome</p>
-                    <input onChange={(e) => { setName(e.target.value) }} type="text" name="name" className='bg-white/10 hover:bg-white/15 transition-all 
-          cursor-pointer focus:cursor-text p-2 w-full outline-none rounded-md text-[25px]' />
+                <div className="aurora-container">
+                    <div className="aurora-sphere aurora-1"></div>
+                    <div className="aurora-sphere aurora-2"></div>
+                    <div className="aurora-sphere aurora-3"></div>
+                    <div className="aurora-sphere aurora-4"></div>
                 </div>
-                <div className='flex flex-row w-full justify-center items-center gap-3'>
-                    <button onClick={criarSala} className='bg-blue-600 p-2 px-4 rounded-full font-medium text-[25px] hover:bg-blue-400 transition-all cursor-pointer w-40 mt-10'>Criar sala</button>
-                    <button onClick={entrarSala} className='bg-blue-600 p-2 px-4 rounded-full font-medium text-[25px] hover:bg-blue-400 transition-all cursor-pointer w-40 mt-10'>Entrar em sala</button>
+
+            </div>
+            <div className='flex flex-col gap-4 w-full max-w-[700px] items-center justify-center select-none'>
+                <div className='relative flex flex-col w-full'>
+                    <h1 className='text-[150px] font-medium text-center opacity-0'
+                        style={{
+                            lineHeight: 1,
+                        }}
+                    >Color Battle</h1>
+                    <h1 className='text-[150px] font-medium z-20 text-center absolute self-center'
+                        style={{
+                            color: 'transparent',
+                            backgroundClip: 'text',
+                            WebkitBackgroundClip: 'text',
+                            backgroundImage: 'linear-gradient(to right, #ff6666, #ff66ff, #6666ff, #66ffff, #66ff66, #ffff66, #ff6666)',
+                            lineHeight: 1,
+                            backgroundSize: '200% auto',
+
+                            animation: 'gradient-x 14s linear infinite'
+                        }}>Color Battle</h1>
+                    <h1 className='text-[150px] font-medium z-10 blur-3xl text-center opacity-65 absolute self-center'
+                        style={{
+                            color: 'transparent',
+                            backgroundClip: 'text',
+                            WebkitBackgroundClip: 'text',
+                            backgroundImage: 'linear-gradient(to right, #ff0000, #ff00ff, #0000ff,  #00ffff, #00ff00, #ffff00, #ff0000)',
+                            lineHeight: 1,
+                            backgroundSize: '200% auto',
+
+                            animation: 'gradient-x 14s linear infinite'
+                        }}>Color Battle</h1>
+                </div>
+
+                <p className='text-[35px] z-30'>Made by <a className='text-blue-500' href='https://boriloo.github.io/portfolio/'>@Borilo</a></p>
+                <div className='flex flex-row w-full justify-center items-center gap-5'>
+                    <button onClick={criarSala} className='bg-blue-600 p-2 px-4 rounded-full flex flex-row gap-2
+                    font-medium text-[25px] hover:bg-blue-400 transition-all cursor-pointer w-full max-w-55 justify-center items-center hover:scale-105 mt-10'><SquarePlus />Criar sala</button>
+                    <button onClick={entrarSala} className='bg-blue-600 p-2 px-4 rounded-full flex flex-row gap-2
+                    font-medium text-[25px] hover:bg-blue-400 transition-all cursor-pointer w-full max-w-55 justify-center items-center hover:scale-105 mt-10'><LogIn />Entrar em sala</button>
                 </div>
 
             </div>

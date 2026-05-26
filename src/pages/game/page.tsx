@@ -16,8 +16,8 @@ type ColorHistory = {
 }
 
 export default function GamePage() {
-    const { colorSelected, currentStep, gameColors, mysteryColors, nextStep, changeColorSelected, colorCompare, changeInGame, inGame, } = useGameContext();
-    const { me, ownerRoom, currentRoom } = usePlayerContext()
+    const { colorSelected, currentStep, gameColors, mysteryColors, nextStep, changeColorSelected, colorCompare, changeInGame, inGame } = useGameContext();
+    const { me, ownerRoom, currentRoom, typaGame } = usePlayerContext()
     const [stage, setStage] = useState<Stages>('picker')
     const [clockNumber, setClockNumber] = useState<number>(4)
     const [animCounter, setAnimCounter] = useState<number>(0)
@@ -318,7 +318,57 @@ export default function GamePage() {
                 <h1 className={`${clockNumber === 3 ? '' : 'opacity-0 mt-5'} text-white text-[100px] absolute self-center transition-all duration-300`}>3</h1>
             </div>
 
-            {me?.class === 'picker' ? (
+            {typaGame === '1v1' ? (<>
+                <div className={`${(stage === 'picker' && clockNumber === 0 && countdown <= 0) ? 'z-10' : 'opacity-0 mt-10 z-0 pointer-events-none'} fixed flex w-full h-screen justify-center transition-all duration-500 items-center`}>
+                    <ColorPicker
+                        selected={localSelectedColor}
+                        onConfirm={(h, s, v) => confirmColor(h, s, v)}
+                        onChange={(h, s, v) => { currentPickerColor.current = { h, s, v } }}
+                    />
+                </div>
+                <div className={`${(stage === 'picker' && countdown !== 0) ? 'z-10' : 'opacity-0 mt-10 z-0 pointer-events-none'} fixed flex w-full h-screen justify-center transition-all duration-500 items-center`}>
+                    <div
+                        className='w-150 h-90 rounded-2xl relative'
+                        style={{ backgroundColor: mysteryBg }}
+                    >
+                        <h1 className='text-white text-[70px] absolute top-3 right-6'>{countdown}</h1>
+                    </div>
+                </div>
+            </>)
+                :
+                me?.class === 'picker' ? (
+                    <div className={`${(stage === 'picker' && clockNumber === 0) ? 'z-10' : 'opacity-0 mt-10 z-0 pointer-events-none'} fixed flex w-full h-screen justify-center transition-all duration-500 items-center`}>
+                        <ColorPicker
+                            selected={localSelectedColor}
+                            onConfirm={(h, s, v) => confirmColor(h, s, v)}
+                            onChange={(h, s, v) => { currentPickerColor.current = { h, s, v } }}
+                        />
+                    </div>
+                ) : (
+                    <>
+
+                        <div
+                            className={`${(countdown === 0 && stage === 'picker' && clockNumber === 0) ? 'z-15' : 'opacity-0 mt-10 z-0 pointer-events-none'} fixed flex flex-col w-full h-screen justify-center transition-all duration-800 items-center`}
+                            style={{ backgroundColor: 'rgb(17, 16, 19)' }}
+                        >
+                            <h1 className='text-white text-[90px]'>
+                                {!colorSelected ? 'O picker esta escolhendo a cor...' : 'Um picker já fez sua escolha.'}
+                            </h1>
+                        </div>
+
+
+                        <div className={`${(stage === 'picker' && countdown !== 0) ? 'z-10' : 'opacity-0 mt-10 z-0 pointer-events-none'} fixed flex w-full h-screen justify-center transition-all duration-500 items-center`}>
+                            <div
+                                className='w-150 h-90 rounded-2xl relative'
+                                style={{ backgroundColor: mysteryBg }}
+                            >
+                                <h1 className='text-white text-[70px] absolute top-3 right-6'>{countdown}</h1>
+                            </div>
+                        </div>
+                    </>
+                )}
+
+            {/* {me?.class === 'picker' ? (
                 <div className={`${(stage === 'picker' && clockNumber === 0) ? 'z-10' : 'opacity-0 mt-10 z-0 pointer-events-none'} fixed flex w-full h-screen justify-center transition-all duration-500 items-center`}>
                     <ColorPicker
                         selected={localSelectedColor}
@@ -348,7 +398,7 @@ export default function GamePage() {
                         </div>
                     </div>
                 </>
-            )}
+            )} */}
 
 
             <div className={`${stage === 'anim' ? 'z-10' : 'opacity-0 mt-10 z-0 pointer-events-none'} fixed flex w-full flex-col h-screen justify-center transition-all duration-500 items-center`}>

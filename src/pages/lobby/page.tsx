@@ -11,7 +11,7 @@ const MAX_HELPERS = 4;
 
 export default function LobbyPage() {
     const { inGame } = useGameContext();
-    const { currentPlayers, currentRoom, me, changePlayer, ownerRoom, changeMe } = usePlayerContext();
+    const { currentPlayers, currentRoom, me, changePlayer, ownerRoom, changeMe, typaGame } = usePlayerContext();
     const navigate = useNavigate()
     const [copied, setCopied] = useState(false)
 
@@ -82,6 +82,8 @@ export default function LobbyPage() {
         </div>
     );
     const renderHelperSlots = (helpers: Player[], team: Teams) => {
+        if (typaGame === `1v1`) return;
+
         const slots = helpers.map(player =>
             <SlotOcupado key={player.name} player={player} />
         );
@@ -103,6 +105,8 @@ export default function LobbyPage() {
 
     return (
         <div className='flex w-full h-screen justify-center items-center text-white'>
+
+            <h1 className='text-white text-2xl absolute top-3 left-3 z-200 opacity-50'>{typaGame}</h1>
 
             <h1 className='text-4xl absolute self-center top-5 text-white z-10 flex flex-row gap-2 items-center'>
                 Código da sala:
@@ -138,8 +142,10 @@ export default function LobbyPage() {
                             ? <SlotOcupado player={pickerOrca} />
                             : <SlotVazio team='orca' cls='picker' />
                         }
+                        {typaGame === 'normal' && (
+                            <p className='text-[30px] mt-5'>Helpers</p>
+                        )}
 
-                        <p className='text-[30px] mt-5'>Helpers</p>
                         {renderHelperSlots(helpersOrca, 'orca')}
                     </div>
 
@@ -156,7 +162,9 @@ export default function LobbyPage() {
                             : <SlotVazio team='siri' cls='picker' />
                         }
 
-                        <p className='text-[30px] mt-5'>Helpers</p>
+                        {typaGame === 'normal' && (
+                            <p className='text-[30px] mt-5'>Helpers</p>
+                        )}
                         {renderHelperSlots(helpersSiri, 'siri')}
                     </div>
 
