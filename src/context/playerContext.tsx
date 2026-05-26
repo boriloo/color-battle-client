@@ -33,7 +33,8 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
     const [currentRoom, setCurrentRoom] = useState<string>('');
     const [currentPlayers, setCurrentPlayers] = useState<Player[]>([]);
     const [me, setMe] = useState<Player | null>(null);
-
+    const currentRoomRef = useRef(currentRoom);
+    useEffect(() => { currentRoomRef.current = currentRoom; }, [currentRoom]);
     const currentPlayersRef = useRef(currentPlayers);
     const ownerRoomRef = useRef(ownerRoom);
 
@@ -93,9 +94,12 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
 
 
     useEffect(() => {
-        socket.on('novo_player', (data: { name: string, roomCode: string }) => {
-            if (data && data.name) {
-                if (data.roomCode != currentRoom) return;
+        socket.on('novo_player', (data) => {
+            if (data?.name) {
+                if (data.roomCode !== currentRoomRef.current) {  // ← ref, não estado
+                    alert('player de outra sala');
+                    return;
+                }
                 addNewPlayer(data.name);
             }
         });
@@ -108,16 +112,21 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
 
         socket.on('info', (data: { players: Player[], roomCode: string }) => {
             if (!data?.players || !data?.roomCode) return;
-
             if (ownerRoomRef.current === data.roomCode) return;
 
             if (ownerRoomRef.current === 'null') {
-                if (data.roomCode != currentRoom) return
-                setCurrentPlayers(data.players);
+                const meAsPlayer: Player = {
+                    name: me!.name,
+                    team: 'none',
+                    class: 'away'
+                };
+
+                const jaEstou = data.players.some(p => p.name === me?.name);
+                setCurrentPlayers(jaEstou ? data.players : [...data.players, meAsPlayer]);
                 setCurrentRoom(data.roomCode);
+
                 socket.emit('novo_player', { name: me?.name, roomCode: data.roomCode });
             }
-
         });
 
         socket.on('mudar_player', (data: { player: Player, roomCode: string }) => {
