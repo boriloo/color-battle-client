@@ -26,6 +26,7 @@ export default function EnterPage() {
     };
 
     const entrarSala = () => {
+        changeOwnerRoom('null')
         navigate('/enteroom')
     };
 

@@ -36,7 +36,8 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
 
     const currentPlayersRef = useRef(currentPlayers);
     const ownerRoomRef = useRef(ownerRoom);
-
+    const currentRoomRef = useRef(currentRoom);
+    useEffect(() => { currentRoomRef.current = currentRoom; }, [currentRoom]);
     useEffect(() => { currentPlayersRef.current = currentPlayers; }, [currentPlayers]);
     useEffect(() => { ownerRoomRef.current = ownerRoom; }, [ownerRoom]);
 
@@ -95,10 +96,11 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         socket.on('novo_player', (data: { name: string, roomCode: string }) => {
             if (data && data.name) {
-                if (data.roomCode != currentRoom) {
-                    alert('player de outra sala')
+                if (data.roomCode != currentRoomRef.current) {
+                    alert('player de outra sala 1')
                     return
                 }
+
                 addNewPlayer(data.name);
             }
         });
@@ -106,32 +108,36 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
         socket.on('entrar_sala', (data) => {
             if (ownerRoomRef.current === data.roomCode) {
                 socket.emit('info', { players: currentPlayersRef.current, roomCode: data.roomCode });
+            } else {
+                changeCurrentRoom(data.roomCode)
+                changeOwnerRoom('null')
             }
         });
 
         socket.on('info', (data: { players: Player[], roomCode: string }) => {
             if (!data?.players || !data?.roomCode) return;
 
-            if (ownerRoomRef.current === data.roomCode) return;
+            if (ownerRoomRef.current === data.roomCode) {
+                return;
+            }
 
             if (ownerRoomRef.current === 'null') {
-                if (data.roomCode != currentRoom) {
-                    alert('player de outra sala')
+                if (data.roomCode != currentRoomRef.current) {
+                    alert('player de outra sala 2')
                     return
                 }
                 setCurrentPlayers(data.players);
                 setCurrentRoom(data.roomCode);
-                setTimeout(() => {
-                    socket.emit('novo_player', { name: me?.name, roomCode: data.roomCode });
-                }, 2000)
+                socket.emit('novo_player', { name: me?.name, roomCode: data.roomCode });
             }
 
         });
 
         socket.on('mudar_player', (data: { player: Player, roomCode: string }) => {
+
             if (data && data.player) {
-                if (data.roomCode != currentRoom) {
-                    alert('player de outra sala')
+                if (data.roomCode != currentRoomRef.current) {
+                    console.log('sala recebida: ', data.player)
                     return
                 }
                 changePlayer(data.player);

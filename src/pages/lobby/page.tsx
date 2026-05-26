@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Class, Player, Teams, usePlayerContext } from '../../context/playerContext'
 import { socket } from '../../lib/socket';
 import { useNavigate } from 'react-router-dom';
@@ -51,15 +51,17 @@ export default function LobbyPage() {
         currentPlayers.filter(p => p.class === 'away'),
         [currentPlayers]);
 
-    const handleChangePlayer = (player: Player) => {
+    const handleChangePlayer = useCallback((player: Player) => {
+        console.log('fodase', currentRoom)
         if (player.name === me?.name) {
             changeMe(player)
         }
         changePlayer(player);
-        socket.emit('mudar_player', { player, currentRoom });
-    };
+        socket.emit('mudar_player', { player, roomCode: currentRoom });
+    }, [currentRoom])
 
     const handleEnterSlot = (team: Teams, cls: Class) => {
+        console.log('fodase')
         if (!me) return;
         handleChangePlayer({ name: me.name, class: cls, team });
     };

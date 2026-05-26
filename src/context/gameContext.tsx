@@ -195,7 +195,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
 
             const Cbp7 = Cbp ** 7;
             const RC = 2 * Math.sqrt(Cbp7 / (Cbp7 + 25 ** 7));
-            const dt = 30 * Math.exp(-((hbp - 275) / 25) ** 2);
+            const dt = 30 * Math.exp((-((hbp - 275) / 25)) ** 2);
             const RT = -RC * Math.sin(rad(2 * dt));
 
             return Math.sqrt(
