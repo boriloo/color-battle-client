@@ -67,12 +67,12 @@ export default function EnterPage() {
                         }}>Color Battle</h1>
                 </div>
 
-                <p className='text-[35px] z-30'>Made by <a className='text-blue-500' href='https://boriloo.github.io/portfolio/'>@Borilo</a></p>
+                <p className='text-[25px] z-30'>Made by <a className='text-blue-500' href='https://boriloo.github.io/portfolio/'>@Borilo</a></p>
                 <div className='flex flex-row w-full justify-center items-center gap-5'>
                     <button onClick={criarSala} className='bg-blue-600 p-2 px-4 rounded-full flex flex-row gap-2
-                    font-medium text-[25px] hover:bg-blue-400 transition-all cursor-pointer w-full max-w-55 justify-center items-center hover:scale-105 mt-10'><SquarePlus />Criar sala</button>
+                    font-medium text-[25px] hover:bg-blue-400 transition-all cursor-pointer w-full max-w-55 justify-center items-center hover:scale-105 mt-10'><SquarePlus />Create party</button>
                     <button onClick={entrarSala} className='bg-blue-600 p-2 px-4 rounded-full flex flex-row gap-2
-                    font-medium text-[25px] hover:bg-blue-400 transition-all cursor-pointer w-full max-w-55 justify-center items-center hover:scale-105 mt-10'><LogIn />Entrar em sala</button>
+                    font-medium text-[25px] hover:bg-blue-400 transition-all cursor-pointer w-full max-w-55 justify-center items-center hover:scale-105 mt-10'><LogIn />Join party</button>
                 </div>
 
             </div>

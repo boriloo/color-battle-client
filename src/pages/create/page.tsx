@@ -45,27 +45,28 @@ export default function CreatePage() {
             <div className='flex flex-col gap-4 w-full max-w-[700px] items-center justify-center select-none'>
 
                 <h1 className='text-[150px] font-medium z-20 text-center'
-                >Criar sala</h1>
+                >new party</h1>
 
 
 
                 <div className='flex flex-col gap-2 w-full'>
-                    <p className='text-[30px]'>seu Nome</p>
+                    <p className='text-[30px]'>your nickname</p>
                     <input onChange={(e) => { setName(e.target.value) }} type="text" name="name" className='bg-white/10 hover:bg-white/15 transition-all 
           cursor-pointer focus:cursor-text p-2 w-full outline-none rounded-md text-[25px]' />
-                    <p className='text-[30px] mt-10'>tipo de sala</p>
+                    <p className='text-[30px] mt-10'>game style</p>
                     <div className='flex flex-row gap-3 justify-center items-center'>
                         <div onClick={() => setTypaRoom('normal')} className={`${typaRoom === 'normal' ? 'bg-white text-black' : 'hover:bg-white/10'} p-2 px-6 text-center flex-1 rounded-lg border-2 text-[30px] transition-all hover:scale-102 cursor-pointer`}>
                             Normal
                         </div>
-                        <div onClick={() => setTypaRoom('1v1')} className={`${typaRoom === '1v1' ? 'bg-white text-black' : 'hover:bg-white/10'} p-2 px-6 text-center flex-1 rounded-lg border-2 text-[30px] transition-all hover:scale-102 cursor-pointer`}>
+                        <div onClick={() => setTypaRoom('1v1')} className={`${typaRoom === '1v1' ? 'bg-white text-black' : 'hover:bg-white/10'} p-2 px-6 
+                        text-center flex-1 rounded-lg border-2 text-[30px] transition-all hover:scale-102 cursor-pointer`}>
                             1v1
                         </div>
                     </div>
                 </div>
                 <div className='flex flex-row w-full justify-center items-center gap-3'>
-                    <button onClick={criarSala} className='bg-blue-600 p-2 px-4 rounded-full font-medium text-[25px] hover:scale-105 hover:bg-blue-400 transition-all cursor-pointer w-40 mt-10'>Criar sala</button>
-
+                    <button onClick={() => navigate('/enter')} className='bg-zinc-500 p-2 px-4 rounded-full font-medium text-[25px] hover:scale-105 hover:bg-zinc-400 transition-all cursor-pointer w-40 mt-10'>Back to menu</button>
+                    <button onClick={criarSala} className='bg-blue-600 p-2 px-4 rounded-full font-medium text-[25px] hover:scale-105 hover:bg-blue-400 transition-all cursor-pointer w-40 mt-10'>Create</button>
                 </div>
 
             </div>
