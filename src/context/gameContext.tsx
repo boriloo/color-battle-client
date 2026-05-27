@@ -292,8 +292,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         socket.on('comecar_jogo', (data: { roomCode: string }) => {
             if (!data?.roomCode) return;
-            alert(currentRoomRef.current)
-            alert(data.roomCode)
+
             if (currentRoomRef.current != data.roomCode) return;
 
             setInGame(true)
