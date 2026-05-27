@@ -293,6 +293,8 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         socket.on('comecar_jogo', (data: { roomCode: string }) => {
             if (!data?.roomCode) return;
 
+            if (currentRoomRef.current != data.roomCode) return;
+
             setInGame(true)
             setGameColors(initialGameColors);
             setCurrentStep(1)
@@ -311,14 +313,14 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
 
         socket.on('cores_misterio', (data: { cores: MysteryColors, roomCode?: string }) => {
             if (!data?.cores) return;
-
+            if (currentRoomRef.current != data.roomCode) return;
             setMysteryColors(data.cores)
         });
 
         socket.on('selecionar_cor', (data) => {
             if (!data) return;
             const step = currentStepRef.current;
-
+            if (currentRoomRef.current != data.roomCode) return;
             if (data.first) {
                 setColorSelected(true);
             }
@@ -327,8 +329,8 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
 
         socket.on('comparar_cor', (data) => {
             if (!data) return;
-
-            const step = currentStepRef.current  // captura o step atual antes de qualquer mudança
+            if (currentRoomRef.current != data.roomCode) return;
+            const step = currentStepRef.current 
 
             const orcaPoints = compareHSV(data.orcaA, data.orcaB)
             const siriPoints = compareHSV(data.siriA, data.siriB)

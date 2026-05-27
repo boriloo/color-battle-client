@@ -74,7 +74,7 @@ export default function GamePage() {
         playAnimation()
         if (ownerRoom === currentRoom) {
             setTimeout(() => {
-                socket.emit('comparar_cor', { orcaA: getColor("orca"), orcaB: getMysteryColor('orca'), siriA: getColor('siri'), siriB: getMysteryColor('siri') })
+                socket.emit('comparar_cor', { orcaA: getColor("orca"), orcaB: getMysteryColor('orca'), siriA: getColor('siri'), siriB: getMysteryColor('siri'), roomCode: currentRoom })
             }, 1800)
         }
 
@@ -187,9 +187,9 @@ export default function GamePage() {
         setLocalSelectedColor(true)
 
         if (colorSelectedRef.current) {
-            socket.emit('selecionar_cor', { h, s, v, team: me?.team, first: false })
+            socket.emit('selecionar_cor', { h, s, v, team: me?.team, first: false, roomCode: currentRoom })
         } else {
-            socket.emit('selecionar_cor', { h, s, v, team: me?.team, first: true })
+            socket.emit('selecionar_cor', { h, s, v, team: me?.team, first: true, roomCode: currentRoom })
         }
     }, [me])
 
