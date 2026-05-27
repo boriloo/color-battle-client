@@ -292,7 +292,8 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         socket.on('comecar_jogo', (data: { roomCode: string }) => {
             if (!data?.roomCode) return;
-
+            alert(currentRoomRef.current)
+            alert(data.roomCode)
             if (currentRoomRef.current != data.roomCode) return;
 
             setInGame(true)
@@ -330,7 +331,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         socket.on('comparar_cor', (data) => {
             if (!data) return;
             if (currentRoomRef.current != data.roomCode) return;
-            const step = currentStepRef.current 
+            const step = currentStepRef.current
 
             const orcaPoints = compareHSV(data.orcaA, data.orcaB)
             const siriPoints = compareHSV(data.siriA, data.siriB)
