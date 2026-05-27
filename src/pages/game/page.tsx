@@ -279,9 +279,9 @@ export default function GamePage() {
             </div>
 
             <div className={`${finished ? '' : 'z-0 opacity-0 pointer-events-none select-none mt-10'} fixed flex justify-center z-30 items-center w-full h-screen transition-all duration-700`}
-                style={{ backgroundColor: 'rgb(17, 16, 19)' }}>
+            >
                 <div className='absolute slef-center blur-[100px] bg-amber-300 w-100 h-100 rounded-full mt-[-90px] z-20'></div>
-                <div className='w-full max-w-[700px] p-4 py-6 bg-zinc-800 rounded-xl flex flex-col gap-3 items-center z-40'>
+                <div className='w-full max-w-[700px] p-4 py-6 finalWindow rounded-xl flex flex-col gap-3 items-center z-40'>
                     <div className={`${whoWon() === 'Orca' ? 'bg-blue-600' : 'bg-cyan-400'}  p-5 mt-[-100px] w-40 h-40 rounded-full flex justify-center items-center`}>
                         {whoWon() === 'Orca' ? (
                             <img src={orcaImg} />
@@ -297,7 +297,10 @@ export default function GamePage() {
                         {orcaHistory.map((color) => {
                             return <div className={`${color.compare > 95 ? 'border-3 border-amber-300 drop-shadow-[0_0_15px_rgba(150,130,50,0.8)]' : ''} w-26 h-25 relative overflow-hidden`}
                                 style={{ backgroundColor: hsvToRgbString(color.game.h, color.game.s, color.game.v) }}>
-                                <p className='text-white text-[30px] absolute top-0.5 left-1.5'>{color.compare}%</p>
+                                <p className='text-white text-[30px] absolute top-0.5 left-1.5'
+                                    style={{
+                                        color: 'white'
+                                    }}>{color.compare}%</p>
                                 <div className='absolute right-[-70px] bottom-[-60px] rotate-130 w-30 h-30'
                                     style={{ backgroundColor: hsvToRgbString(color.mystery.h, color.mystery.s, color.mystery.v) }}></div>
                             </div>
@@ -308,7 +311,10 @@ export default function GamePage() {
                         {siriHistory.map((color) => {
                             return <div className={`${color.compare > 95 ? 'border-3 border-amber-300 drop-shadow-[0_0_15px_rgba(150,130,50,0.8)]' : ''} w-26 h-25 relative overflow-hidden`}
                                 style={{ backgroundColor: hsvToRgbString(color.game.h, color.game.s, color.game.v) }}>
-                                <p className='text-white text-[30px] absolute top-0.5 left-1.5'>{color.compare}%</p>
+                                <p className='text-white text-[30px] absolute top-0.5 left-1.5'
+                                    style={{
+                                        color: 'white'
+                                    }}>{color.compare}%</p>
                                 <div className='absolute right-[-70px] bottom-[-60px] rotate-130 w-30 h-30'
                                     style={{ backgroundColor: hsvToRgbString(color.mystery.h, color.mystery.s, color.mystery.v) }}></div>
                             </div>
@@ -328,8 +334,7 @@ export default function GamePage() {
 
 
             <div
-                className={`${clockNumber !== 0 ? 'z-15' : 'opacity-0 mt-10 z-0 pointer-events-none'} fixed flex flex-col w-full h-screen justify-center transition-all duration-800 items-center`}
-                style={{ backgroundColor: 'rgb(17, 16, 19)' }}
+                className={`${clockNumber !== 0 ? 'z-15' : 'opacity-0 mt-10 z-0 pointer-events-none'} screenCount fixed flex flex-col w-full h-screen justify-center transition-all duration-800 items-center`}
             >
                 <h1 className={`${clockNumber === 1 ? '' : 'opacity-0 mt-5'} text-white text-[100px] absolute self-center transition-all duration-300`}>1</h1>
                 <h1 className={`${clockNumber === 2 ? '' : 'opacity-0 mt-5'} text-white text-[100px] absolute self-center transition-all duration-300`}>2</h1>
@@ -366,7 +371,8 @@ export default function GamePage() {
                     <>
 
                         <div
-                            className={`${(countdown === 0 && stage === 'picker' && clockNumber === 0) ? 'z-15' : 'opacity-0 mt-10 z-0 pointer-events-none'} fixed flex flex-col w-full h-screen justify-center transition-all duration-800 items-center`}
+                            className={`${(countdown === 0 && stage === 'picker' && clockNumber === 0) ? 'z-15' : 'opacity-0 mt-10 z-0 pointer-events-none'} fixed flex flex-col w-full h-screen justify-center 
+                            transition-all duration-800 items-center screenCount`}
                             style={{ backgroundColor: 'rgb(17, 16, 19)' }}
                         >
                             <h1 className='text-white text-[90px]'>
@@ -463,10 +469,16 @@ export default function GamePage() {
                 <div className={`${(animCounter >= 3 && !finished) ? '' : 'opacity-0 z-0 pointer-events-none'} flex flex-col gap-4 items-center transition-all duration-400 mt-[-356px]`}>
                     <div className='flex flex-row gap-3'>
                         <div className='w-105 h-70 rounded-2xl flex z-10 bg-black/25 justify-center items-center'>
-                            <p className='z-10 text-white text-[100px] text-center'>{orcaPoints}%</p>
+                            <p className='z-10 text-white text-[100px] text-center'
+                                style={{
+                                    color: 'white'
+                                }}>{orcaPoints}%</p>
                         </div>
                         <div className='w-105 h-70 rounded-2xl flex z-10 bg-black/25 justify-center items-center'>
-                            <p className='z-10 text-white text-[100px] text-center'>{siriPoints}%</p>
+                            <p className='z-10 text-white text-[100px] text-center'
+                                style={{
+                                    color: 'white'
+                                }}>{siriPoints}%</p>
                         </div>
                     </div>
                 </div>

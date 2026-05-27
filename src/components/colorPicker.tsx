@@ -85,6 +85,9 @@ export default function ColorPicker({ onConfirm, onChange, selected }: ColorPick
                     onClick={() => onConfirm?.(h, s, v)}
                     className={`${selected ? 'opacity-0 pointer-events-none' : ''} absolute right-5 bottom-5 p-2 px-5 bg-white text-black shadow-md text-xl
                     font-medium rounded-full hover:scale-105 transition-all cursor-pointer`}
+                    style={{
+                        color: 'black'
+                    }}
                 >
                     Confirmar
                 </button>

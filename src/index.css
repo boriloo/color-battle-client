@@ -25,7 +25,7 @@ body {
 
 .light button {
   color: white;
-  
+
 }
 
 
@@ -235,6 +235,22 @@ body {
 
 .light .colorShadow {
   opacity: 0;
+}
+
+.screenCount {
+  background-color: rgb(17, 16, 19);
+}
+
+.light .screenCount {
+  background-color: rgb(241, 241, 241) !important;
+}
+
+.finalWindow {
+  background-color: rgb(32, 31, 32);
+}
+
+.light .finalWindow {
+  background-color: rgb(231, 231, 231) !important;
 }
 
 /* Neutral 700 */
