@@ -386,7 +386,10 @@ export default function GamePage() {
                                 className='w-150 h-90 rounded-2xl relative'
                                 style={{ backgroundColor: mysteryBg }}
                             >
-                                <h1 className='text-white text-[70px] absolute top-3 right-6'>{countdown}</h1>
+                                <h1 className='text-white text-[70px] absolute top-3 right-6'
+                                    style={{
+                                        color: 'white'
+                                    }}>{countdown}</h1>
                             </div>
                         </div>
                     </>
