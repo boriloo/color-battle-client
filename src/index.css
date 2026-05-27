@@ -8,8 +8,26 @@
 }
 
 body {
+  transition: 0.4s;
   background-color: rgb(17, 16, 19);
+  color: white;
 }
+
+.light {
+  color: black;
+  background-color: rgb(241, 241, 241) !important;
+}
+
+.light * {
+  color: black;
+
+}
+
+.light button {
+  color: white;
+  
+}
+
 
 
 /* Container para ajudar a segurar o espaço do input rotacionado */
@@ -121,6 +139,7 @@ body {
 
 /* Base das esferas de cor */
 .aurora-sphere {
+  transition: 0.4s;
   position: absolute;
   filter: blur(7vi);
   /* Aumentei o blur para um efeito mais suave */
@@ -184,6 +203,38 @@ body {
 /* Roxo Ultra Dark */
 .aurora-4 {
   background-color: #5b2932;
+}
+
+.light .aurora-1 {
+  background-color: #c1ffaa;
+}
+
+/* Grafite */
+.light .aurora-2 {
+  background-color: #7b9cff;
+}
+
+/* Neutral 900 */
+.light .aurora-3 {
+  background-color: #d9c5ff;
+}
+
+/* Roxo Ultra Dark */
+.light .aurora-4 {
+  background-color: #ffb5c3;
+}
+
+.colorText {
+  transition: 0.4s;
+  background-image: linear-gradient(to right, #ff6666, #ff66ff, #6666ff, #66ffff, #66ff66, #ffff66, #ff6666);
+}
+
+.light .colorText {
+  background-image: linear-gradient(to right, #ff0000, #ff6000, #ffc800, #9cc70e, #00bea5, #d20077, #ff0000);
+}
+
+.light .colorShadow {
+  opacity: 0;
 }
 
 /* Neutral 700 */

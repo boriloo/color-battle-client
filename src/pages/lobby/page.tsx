@@ -106,6 +106,18 @@ export default function LobbyPage() {
     return (
         <div className='flex w-full h-screen justify-center items-center text-white'>
 
+            <div className={`
+             min-h-screen w-full fixed bg-cover bg-center z-[-1] overflow-hidden scale-101 opacity-80 brightness-75 rotate-180`}>
+
+                <div className="aurora-container">
+                    <div className="aurora-sphere aurora-1"></div>
+                    <div className="aurora-sphere aurora-2"></div>
+                    <div className="aurora-sphere aurora-3"></div>
+                    <div className="aurora-sphere aurora-4"></div>
+                </div>
+
+            </div>
+
             <h1 className='text-white text-2xl absolute top-3 left-3 z-200 opacity-50'>{typaGame}</h1>
 
             <h1 className='text-4xl absolute self-center top-5 text-white z-10 flex flex-row gap-2 items-center'>

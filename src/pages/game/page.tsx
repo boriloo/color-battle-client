@@ -266,6 +266,18 @@ export default function GamePage() {
     return (
         <>
 
+            <div className={`
+             min-h-screen w-full fixed bg-cover bg-center z-[-1] overflow-hidden scale-101 opacity-80 brightness-75 rotate-180`}>
+
+                <div className="aurora-container">
+                    <div className="aurora-sphere aurora-1"></div>
+                    <div className="aurora-sphere aurora-2"></div>
+                    <div className="aurora-sphere aurora-3"></div>
+                    <div className="aurora-sphere aurora-4"></div>
+                </div>
+
+            </div>
+
             <div className={`${finished ? '' : 'z-0 opacity-0 pointer-events-none select-none mt-10'} fixed flex justify-center z-30 items-center w-full h-screen transition-all duration-700`}
                 style={{ backgroundColor: 'rgb(17, 16, 19)' }}>
                 <div className='absolute slef-center blur-[100px] bg-amber-300 w-100 h-100 rounded-full mt-[-90px] z-20'></div>

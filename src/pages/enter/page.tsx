@@ -24,7 +24,7 @@ export default function EnterPage() {
 
 
     return (
-        <div className='flex w-full min-h-screen justify-center items-center text-white p-5'>
+        <div className='flex w-full min-h-screen justify-center items-center p-5'>
             <div className={`
              min-h-screen w-full fixed bg-cover bg-center z-[-1] overflow-hidden scale-101 opacity-80 brightness-75 rotate-180`}>
 
@@ -43,18 +43,18 @@ export default function EnterPage() {
                             lineHeight: 1,
                         }}
                     >Color Battle</h1>
-                    <h1 className='text-[150px] font-medium z-20 text-center absolute self-center'
+                    <h1 className='text-[150px] colorText font-medium z-20 text-center absolute self-center'
                         style={{
                             color: 'transparent',
                             backgroundClip: 'text',
                             WebkitBackgroundClip: 'text',
-                            backgroundImage: 'linear-gradient(to right, #ff6666, #ff66ff, #6666ff, #66ffff, #66ff66, #ffff66, #ff6666)',
+                           
                             lineHeight: 1,
                             backgroundSize: '200% auto',
 
                             animation: 'gradient-x 14s linear infinite'
                         }}>Color Battle</h1>
-                    <h1 className='text-[150px] font-medium z-10 blur-3xl text-center opacity-65 absolute self-center'
+                    <h1 className='text-[150px] colorShadow font-medium z-10 blur-3xl text-center opacity-65 absolute self-center'
                         style={{
                             color: 'transparent',
                             backgroundClip: 'text',
@@ -70,9 +70,9 @@ export default function EnterPage() {
                 <p className='text-[25px] z-30'>Made by <a className='text-blue-500' href='https://boriloo.github.io/portfolio/'>@Borilo</a></p>
                 <div className='flex flex-row w-full justify-center items-center gap-5'>
                     <button onClick={criarSala} className='bg-blue-600 p-2 px-4 rounded-full flex flex-row gap-2
-                    font-medium text-[25px] hover:bg-blue-400 transition-all cursor-pointer w-full max-w-55 justify-center items-center hover:scale-105 mt-10'><SquarePlus />Create party</button>
+                    font-medium text-[25px] hover:bg-blue-400 transition-all cursor-pointer w-full max-w-55 justify-center items-center hover:scale-105 mt-10'><SquarePlus color='white' />Create party</button>
                     <button onClick={entrarSala} className='bg-blue-600 p-2 px-4 rounded-full flex flex-row gap-2
-                    font-medium text-[25px] hover:bg-blue-400 transition-all cursor-pointer w-full max-w-55 justify-center items-center hover:scale-105 mt-10'><LogIn />Join party</button>
+                    font-medium text-[25px] hover:bg-blue-400 transition-all cursor-pointer w-full max-w-55 justify-center items-center hover:scale-105 mt-10'><LogIn color='white' />Join party</button>
                 </div>
 
             </div>
