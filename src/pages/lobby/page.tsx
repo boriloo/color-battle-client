@@ -71,7 +71,7 @@ export default function LobbyPage() {
             onClick={() => handleEnterSlot(team, cls)}
             className='flex flex-row p-2 px-5 rounded-2xl hover:scale-105 bg-white/10 w-full group cursor-pointer transition-all hover:bg-white/20'
         >
-            <p className='group-hover:opacity-100 opacity-0 text-[25px] transition-all'>➔ Entrar</p>
+            <p className='group-hover:opacity-100 opacity-0 text-[25px] transition-all'>➔ Enter</p>
         </div>
     );
 
@@ -95,7 +95,13 @@ export default function LobbyPage() {
         return slots;
     };
 
-    const canStart = true
+    const canStart = () => {
+        if (typaGame === '1v1') {
+            return (pickerOrca && pickerSiri)
+        } else {
+            return (pickerOrca && pickerSiri && helpersOrca.length > 0 && helpersSiri.length > 0)
+        }
+    }
 
     const startGame = () => {
         if (ownerRoom != currentRoom) return;
@@ -121,25 +127,31 @@ export default function LobbyPage() {
             <h1 className='text-white text-2xl absolute top-3 left-3 z-200 opacity-50'>{typaGame}</h1>
 
             <h1 className='text-4xl absolute self-center top-5 text-white z-10 flex flex-row gap-2 items-center'>
-                Código da sala:
+                PARTY CODE:
                 <p onClick={copyInviteLink} className='p-2 bg-white/20 flex flex-row gap-3 items-center rounded-md hover:bg-white/30 transition-all cursor-pointer'>
                     {currentRoom}
                     {copied ? <Check size={30} className='text-green-400' /> : <Copy size={30} />}
                 </p>
             </h1>
 
+
+
             {/* pop-up */}
             <div className={`${copied ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'} fixed bottom-6 left-1/2 -translate-x-1/2 bg-white/20 backdrop-blur-md text-white px-5 py-3 rounded-full text-[20px] transition-all duration-300`}>
-                Link copiado!
+                URL COPIED!
             </div>
             <div className='absolute left-0 top-40 w-full max-w-60 bg-white/15 backdrop-blur-md flex text-[25px] flex-col p-4 rounded-r-2xl overflow-hidden'>
-                <p>Em espera:</p>
+                <p>waiting:</p>
                 {awayPlayers.map((player) => (
                     <p key={player.name}>{player.name}</p>
                 ))}
             </div>
 
             <div className='flex flex-col gap-4 w-full max-w-[800px] items-center justify-center'>
+                <h1 className='text-3xl self-center opacity-70 text-white z-10 flex flex-row gap-2 items-center'>
+                    helpers receive colors and give hints to pickers, who have to guess it right.
+
+                </h1>
                 <div className='flex flex-row w-full gap-6'>
 
                     {/* Time Orca */}
@@ -147,7 +159,7 @@ export default function LobbyPage() {
                         <div className='bg-blue-800 rounded-full p-5 w-25 h-25 z-20 self-center'>
                             <img src={orcaImg} alt="" />
                         </div>
-                        <p className='text-[45px] text-blue-400 self-center'>time orca</p>
+                        <p className='text-[45px] text-blue-400 self-center'>team orca</p>
 
                         <p className='text-[30px]'>Picker</p>
                         {pickerOrca
@@ -166,7 +178,7 @@ export default function LobbyPage() {
                         <div className='bg-cyan-400 rounded-full p-5 w-25 h-25 z-20 self-center'>
                             <img src={crabImg} alt="" />
                         </div>
-                        <p className='text-[45px] text-cyan-300 self-center'>time siri</p>
+                        <p className='text-[45px] text-cyan-300 self-center'>team crab</p>
 
                         <p className='text-[30px]'>Picker</p>
                         {pickerSiri
@@ -182,7 +194,8 @@ export default function LobbyPage() {
 
                 </div>
                 {currentRoom === ownerRoom && (
-                    <button disabled={!canStart} onClick={startGame} className={`${canStart ? 'cursor-pointer' : 'saturate-0 pointer-events-none'} bg-blue-600 p-2 px-4 rounded-full font-medium text-[25px] hover:bg-blue-400 transition-all w-40 mt-10`}>Começar</button>
+                    <button disabled={!canStart()} onClick={startGame} className={`${canStart() ? 'cursor-pointer' : 'saturate-0 pointer-events-none'} 
+                    bg-blue-600 p-2 px-4 rounded-full font-medium text-[25px] hover:bg-blue-400 transition-all w-40 mt-10`}>Start</button>
                 )}
 
             </div>
