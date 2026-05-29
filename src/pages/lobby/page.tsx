@@ -150,9 +150,8 @@ export default function LobbyPage() {
             <div className='flex flex-col gap-4 w-full max-w-[800px] items-center justify-center'>
                 <h1 className='text-3xl self-center opacity-70 text-white z-10 flex flex-row gap-2 items-center'>
                     helpers receive colors and give hints to pickers, who have to guess it right.
-
                 </h1>
-                <div className='flex flex-row w-full gap-6'>
+                <div className='flex flex-row w-full gap-6 mt-4'>
 
                     {/* Time Orca */}
                     <div className='flex flex-col gap-3 items-start flex-1'>
