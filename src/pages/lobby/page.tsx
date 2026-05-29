@@ -16,7 +16,7 @@ export default function LobbyPage() {
     const [copied, setCopied] = useState(false)
 
     const copyInviteLink = () => {
-        navigator.clipboard.writeText(`https://color-battle-client.vercel.app/enteroom/${currentRoom}`)
+        navigator.clipboard.writeText(`https://huemaster.vercel.app/enteroom/${currentRoom}`)
         setCopied(true)
         setTimeout(() => setCopied(false), 2000)
     }
