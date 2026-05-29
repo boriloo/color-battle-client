@@ -42,7 +42,7 @@ export default function EnterPage() {
                         style={{
                             lineHeight: 1,
                         }}
-                    >Color Battle</h1>
+                    >HueMaster</h1>
                     <h1 className='text-[150px] colorText font-medium z-20 text-center absolute self-center'
                         style={{
                             color: 'transparent',
@@ -53,7 +53,7 @@ export default function EnterPage() {
                             backgroundSize: '200% auto',
 
                             animation: 'gradient-x 14s linear infinite'
-                        }}>Color Battle</h1>
+                        }}>HueMaster</h1>
                     <h1 className='text-[150px] colorShadow font-medium z-10 blur-3xl text-center opacity-65 absolute self-center'
                         style={{
                             color: 'transparent',
@@ -64,7 +64,7 @@ export default function EnterPage() {
                             backgroundSize: '200% auto',
 
                             animation: 'gradient-x 14s linear infinite'
-                        }}>Color Battle</h1>
+                        }}>HueMaster</h1>
                 </div>
 
                 <p className='text-[25px] z-30'>Made by <a className='text-blue-500' href='https://boriloo.github.io/portfolio/'>@Borilo</a></p>
